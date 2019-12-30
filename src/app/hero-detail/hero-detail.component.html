@@ -1,17 +1,15 @@
 <article>
     <section>
         <div *ngIf="hero">
-        
             <h2>{{hero.name | uppercase}} Details</h2>
             <div><span>id: </span>{{hero.id}}</div>
-            <div class="form-group">
-                <label>Name:
-                    <input [(ngModel)]="hero.name" placeholder="name" class="form-control"/>
-                </label>
-                <button (click)="destroy(hero)" class="btn btn-danger">Destroy</button>
-                <div id="selectedHero"></div>
+            <div>
+              <label>name:
+                <input [(ngModel)]="hero.name" placeholder="name"/>
+              </label>
             </div>
-          
+            <button (click)="goBack()">go back</button>
           </div>
+          <button class="btn btn-action" (click)="save()">save</button>
     </section>
 </article>

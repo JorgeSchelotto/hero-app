@@ -1,32 +1,42 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
-import { Hero } from '../hero';
+import { Hero }         from '../hero';
+import { HeroService }  from '../hero.service';
 
 @Component({
   selector: 'app-hero-detail',
   templateUrl: './hero-detail.component.html',
-  styleUrls: ['./hero-detail.component.css']
+  styleUrls: [ './hero-detail.component.css' ]
 })
 export class HeroDetailComponent implements OnInit {
+  hero: Hero;
 
-  @Input() hero: Hero;
+  constructor(
+    private route: ActivatedRoute,
+    private heroService: HeroService,
+    private location: Location
+  ) {}
 
-  constructor() { }
-
-  ngOnInit() {
+  ngOnInit(): void {
+    this.getHero();
   }
 
-  destroy(hero: Hero): void{
+  getHero(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.heroService.getHero(id)
+      .subscribe(hero => this.hero = hero);
+  }
 
-    console.log(hero.name, "fue aniquilado");
+  goBack(): void {
+    this.location.back();
+  }
 
-    // Imprime en nodo hijo de button.
-    let textnode = document.createTextNode(hero.name + " fue aniquilado");
+  save(): void {
+    this.heroService.updateHero(this.hero)
+      .subscribe(() => this.goBack());
+  }
 
-    document.getElementById("selectedHero").appendChild(textnode);
-     
-
-
-}
 
 }
